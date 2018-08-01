@@ -2,7 +2,7 @@
 Library           String
 Library           Selenium2Library
 Library           Collections
-Library           avi_service.py
+Library           expagency_service.py
 
 *** Variables ***
 ${locator.edit.description}    id = lots-description
@@ -106,7 +106,7 @@ ${locator.awards[1].status}    id = awards[1].status
     Open Browser    ${USERS.users['${username}'].homepage}    ${USERS.users['${username}'].browser}    alias=${BROWSER_ALIAS}
     Set Window Size    @{USERS.users['${username}'].size}
     Set Window Position    @{USERS.users['${username}'].position}
-    Run Keyword If    '${username}' != 'avi_Viewer'    Login    ${username}
+    Run Keyword If    '${username}' != 'expagency_Viewer'    Login    ${username}
 
 Підготувати дані для оголошення тендера
     [Arguments]    ${username}    ${tender_data}    ${role_name}
@@ -348,7 +348,7 @@ Login
 
 Отримати інформацію про dgfDecisionDate
     ${date_value}=    Отримати текст із поля і показати на сторінці    dgfDecisionDate
-    ${return_value}=    avi_service.convert_date    ${date_value}
+    ${return_value}=    expagency_service.convert_date    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про tenderAttempts
@@ -506,7 +506,7 @@ Login
 
 Отримати інформацію про items[0].deliveryDate.endDate
     ${date_value}=    Отримати текст із поля і показати на сторінці    items[0].deliveryDate.endDate
-    ${return_value}=    avi_service.convert_date    ${date_value}
+    ${return_value}=    expagency_service.convert_date    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про auction[0].status
