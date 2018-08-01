@@ -2,7 +2,7 @@
 Library           String
 Library           Selenium2Library
 Library           Collections
-Library           expagency_service.py
+Library           avi_service.py
 
 *** Variables ***
 ${locator.edit.description}    id = lots-description
@@ -106,7 +106,7 @@ ${locator.awards[1].status}    id = awards[1].status
     Open Browser    ${USERS.users['${username}'].homepage}    ${USERS.users['${username}'].browser}    alias=${BROWSER_ALIAS}
     Set Window Size    @{USERS.users['${username}'].size}
     Set Window Position    @{USERS.users['${username}'].position}
-    Run Keyword If    '${username}' != 'expagency_Viewer'    Login    ${username}
+    Run Keyword If    '${username}' != 'avi_Viewer'    Login    ${username}
 
 Підготувати дані для оголошення тендера
     [Arguments]    ${username}    ${tender_data}    ${role_name}
@@ -115,15 +115,6 @@ ${locator.awards[1].status}    id = awards[1].status
 Login
     [Arguments]    @{ARGUMENTS}
     Go to    ${USERS.users['${ARGUMENTS[0]}'].homepage}
-    Input text    id=login-form-login    ${USERS.users['${ARGUMENTS[0]}'].login}
-    Input text    id = login-form-password    ${USERS.users['${ARGUMENTS[0]}'].password}
-    Натиснути    id=login-btn
-    Sleep    1
-
-Змінити користувача
-    [Arguments]    @{ARGUMENTS}
-    Go to    ${USERS.users['${ARGUMENTS[0]}'].homepage}
-    Sleep    1
     Input text    id=login-form-login    ${USERS.users['${ARGUMENTS[0]}'].login}
     Input text    id = login-form-password    ${USERS.users['${ARGUMENTS[0]}'].password}
     Натиснути    id=login-btn
@@ -357,7 +348,7 @@ Login
 
 Отримати інформацію про dgfDecisionDate
     ${date_value}=    Отримати текст із поля і показати на сторінці    dgfDecisionDate
-    ${return_value}=    expagency_service.convert_date    ${date_value}
+    ${return_value}=    avi_service.convert_date    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про tenderAttempts
@@ -515,7 +506,7 @@ Login
 
 Отримати інформацію про items[0].deliveryDate.endDate
     ${date_value}=    Отримати текст із поля і показати на сторінці    items[0].deliveryDate.endDate
-    ${return_value}=    expagency_service.convert_date    ${date_value}
+    ${return_value}=    avi_service.convert_date    ${date_value}
     [Return]    ${return_value}
 
 Отримати інформацію про auction[0].status
@@ -575,7 +566,7 @@ Login
     ${index}=    inc    ${index}
     Wait Until Page Contains Element    id = questions[${index}].date
     ${return_value}=    Get text    id = questions[${index}].date
-    ${return_value}=    convert_date_time_to_iso    ${return_value}
+    ${return_value}=    convert_date_to_iso    ${return_value}
     [Return]    ${return_value}
 
 Отримати інформацію про awards[${index}].status
@@ -591,13 +582,9 @@ Login
     Input Text    id=questions-answer    ${answer_data.data.answer}
     Натиснути    id=create-question-btn
 
-Перейти до сторінки запитань
-    [Arguments]    ${username}    ${tender_uaid}
-    expagency.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
-
 Отримати інформацію із запитання
     [Arguments]    ${username}    ${tender_uaid}    ${question_id}    ${field_name}
-    expagency.Перейти до сторінки запитань    ${username}    ${tender_uaid}
+    expagency.Пошук тендера по ідентифікатору    ${username}    ${tender_uaid}
     Sleep    1
     ${return_value}=    Run Keyword If    '${field_name}' == 'title'    Отримати інформацію про questions[${index}].title
     ...    ELSE IF    '${field_name}' == 'answer'    Отримати інформацію про questions[${index}].answer
